@@ -59,7 +59,7 @@ detectOS() {
         source /etc/os-release
         if [ "$ID" = "ubuntu" ] || [ "$ID" = "centos" ]; then
             OS_NAME="${ID}"
-            OS_PRETTY+"${PRETTY_NAME}"
+            OS_PRETTY="${PRETTY_NAME}"
         else
             printf "${tty_red}Unsupported OS.${tty_reset}"
             return 1

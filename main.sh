@@ -42,27 +42,43 @@ systemStateDetection() {
     # OS
     detectOS
 
+    # BitWarden
+    BW_PATH="$(command -v bw)"
+    
     # Brew
     BREW_PATH="$(command -v brew)"
+
+    # Composer
+    COMPOSER_PATH="$(command -v composer)"
+
+    # Git
+    GIT_PATH="$(command -v git)"
+
+    # MariaDB
+    MARIADB_PATH="$(command -v mysqld)"
+
+    # NGINX
+    NGINX_DETECTED="$(command -v nginx)"
 
     # PHP
     PHP_PATH="$(command -v php)"
     if [ -n PHP_PATH ]; then PHP_VERSION="$(${PHP_PATH} -r 'echo PHP_VERSION;')"; fi
 
-    # NGINX
-    NGINX_DETECTED="$(command -v nginx)"
-
-    # MariaDB
-    MARIADB_PATH="$(command -v mysqld)"
+    # ZSH
+    ZSH_PATH="$(command -v zsh)"
 }
 
 systemState() {
     systemStateDetection
     printf "${tty_blue}${tty_bold}OS: ${tty_reset}${tty_white}$OS_PRETTY\n"
+    if [ -n "$BW_PATH" ]; then checkbox "BitWarden Installed" 1; else checkbox "BitWarden Not Installed"; fi
     if [ -n "$BREW_PATH" ]; then checkbox "Brew Installed" 1; else checkbox "Brew Not Installed"; fi
-    if [ -n "$PHP_PATH" ]; then checkbox "PHP Installed - $PHP_VERSION" 1; else checkbox "PHP Not Installed"; fi
-    if [ -n "$NGINX_DETECTED" ]; then checkbox "NGINX Installed" 1; else checkbox "NGINX Not Installed"; fi
+    if [ -n "$COMPOSER_PATH" ]; then checkbox "Composer Installed" 1; else checkbox "Composer Not Installed"; fi
+    if [ -n "$GIT_PATH" ]; then checkbox "Git Installed" 1; else checkbox "Git Not Installed"; fi
     if [ -n "$MARIADB_PATH" ]; then checkbox "MariaDB Installed" 1; else checkbox "MariaDB Not Installed"; fi
+    if [ -n "$NGINX_DETECTED" ]; then checkbox "NGINX Installed" 1; else checkbox "NGINX Not Installed"; fi
+    if [ -n "$PHP_PATH" ]; then checkbox "PHP Installed - $PHP_VERSION" 1; else checkbox "PHP Not Installed"; fi
+    if [ -n "$ZSH_PATH" ]; then checkbox "ZSH Installed" 1; else checkbox "ZSH Not Installed"; fi
 }
 
 menuPrompt() {
@@ -74,6 +90,7 @@ menuPrompt() {
         printf "${tty_bold}${tty_blue} A) Run all tasks\n"
         printf "${tty_bold}${tty_blue} D) Clone dot files from GitHub\n"
         printf "${tty_bold}${tty_blue} L) Install and configure packages necessary for Laravel development\n"
+        printf "${tty_bold}${tty_blue} P) Install support packages only (Brew, Composer and ZSH are not installed)"
         printf "${tty_bold}${tty_blue} S) Install SSH and GPG keys from BitWarden\n"
         printf "${tty_bold}${tty_blue} V) Install OpenVPN Server and configure client profile\n"
         printf "${tty_bold}${tty_blue} Z) Install ZSH and Oh-My-Zsh\n"
@@ -96,6 +113,10 @@ menuPrompt() {
                 ;;
             l|L)
                 doTask laravel
+                break
+                ;;
+            p|P)
+                doTask packages
                 break
                 ;;
             s|S)
@@ -127,6 +148,9 @@ ARG_DOTFILES=0 # --dotfiles -d
 # Install and configure Laravel development env (### NOT DONE)
 ARG_LARAVEL=0 # --laravel -l
 
+# Install support packages only
+ARG_PACKAGES=0 # --packages -l
+
 # Download SSH keys from BitWarden
 ARG_SSH=0 # --ssh -s
 
@@ -153,6 +177,9 @@ while [ $# -gt 0 ]; do
             ;;
         --laravel|-l)
             ARG_LARAVEL=1
+            ;;
+        --packages|-p)
+            ARG_PACKAGES=1
             ;;
         --ssh|-s)
             ARG_SSH=1
@@ -186,6 +213,9 @@ if [ "$ARG_UNATTENDED" = "0" ]; then
     fi
     if [ "$ARG_LARAVEL" = "1" ]; then
         doTask laravel
+    fi
+    if [ "$ARG_PACKAGES" = "1" ]; then
+        dotask packages
     fi
     if [ "$ARG_SSH" = "1" ]; then
         if [ -n "$ARG_BW_SERVER" ]; then
