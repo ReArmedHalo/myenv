@@ -66,7 +66,7 @@ detectOS() {
         fi
     elif [ $(uname) = "Darwin" ]; then
         OS_NAME="macOS"
-        OS_PRETTY="$(sw_vers -productVersion)"
+        OS_PRETTY="macOS $(sw_vers -productVersion)"
     else
         printf "${tty_red}Failed to detect OS! /etc/os-release not found and uname is not Darwin.${tty_reset}"
         return 1

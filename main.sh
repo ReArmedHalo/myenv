@@ -30,11 +30,10 @@ doTask() {
 
 header() {
     printf "${tty_blue}"
-    printf "====================================\n"
-    printf "||   ${tty_white}MyEnv Configuration Script${tty_blue}   ||\n"
-    printf "||      ${tty_white}By: Dustin Schreiber${tty_blue}      ||\n"
-    printf "|| ${tty_white}https://github.com/ReArmedHalo${tty_blue} ||\n"
-    printf "====================================\n"
+    printf "==========================================\n"
+    printf "||      ${tty_white}MyEnv Configuration Script${tty_blue}      ||\n"
+    printf "|| ${tty_white}https://github.com/ReArmedHalo/myenv${tty_blue} ||\n"
+    printf "==========================================\n"
     printf "${tty_reset}\n"
 }
 
@@ -85,12 +84,11 @@ menuPrompt() {
     while true; do
         printf "${tty_reset}\n"
         printf "${tty_blue}==============================\n"
-        printf "${tty_white}What do you want to do?"
-        printf "\n"
+        printf "${tty_white}What do you want to do?\n"
         printf "${tty_bold}${tty_blue} A) Run all tasks\n"
         printf "${tty_bold}${tty_blue} D) Clone dot files from GitHub\n"
         printf "${tty_bold}${tty_blue} L) Install and configure packages necessary for Laravel development\n"
-        printf "${tty_bold}${tty_blue} P) Install support packages only (Brew, Composer and ZSH are not installed)"
+        printf "${tty_bold}${tty_blue} P) Install support packages only (Brew, Composer and ZSH are not installed)\n"
         printf "${tty_bold}${tty_blue} S) Install SSH and GPG keys from BitWarden\n"
         printf "${tty_bold}${tty_blue} V) Install OpenVPN Server and configure client profile\n"
         printf "${tty_bold}${tty_blue} Z) Install ZSH and Oh-My-Zsh\n"
