@@ -147,7 +147,7 @@ ARG_DOTFILES=0 # --dotfiles -d
 ARG_LARAVEL=0 # --laravel -l
 
 # Install support packages only
-ARG_PACKAGES=0 # --packages -l
+ARG_PACKAGES=0 # --packages -p
 
 # Download SSH keys from BitWarden
 ARG_SSH=0 # --ssh -s
