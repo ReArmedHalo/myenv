@@ -41,8 +41,4 @@ runTask() {
 
     git config --global user.signingkey 7EE17E53F4F57537
     git config --global commit.gpgsign true
-
-    curl -fsSL -o "$HOME/.ssh-find-agent.sh" https://raw.githubusercontent.com/wwalker/ssh-find-agent/master/ssh-find-agent.sh
-    chmod +x "$HOME/.ssh-find-agent.sh"
-    echo ". '$HOME/.ssh-find-agent.sh'" >> "$HOME/.zshenv"
 }
