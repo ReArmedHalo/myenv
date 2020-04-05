@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Target run line ex:
-# git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/configure.sh --all
+# git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/main.sh -u --all
 
 # Sudo check
 if [ "$EUID" -ne 0 ]
@@ -14,6 +14,10 @@ fi
 apt update
 apt upgrade -y
 apt install -y curl git build-essential zsh zip unzip jq
+
+apt install -y software-properties-common
+add-apt-repository ppa:ondrej/php
+apt update
 
 # Clone my dotfiles repository
 git clone https://github.com/ReArmedHalo/dotfiles.git ~/dotfiles
