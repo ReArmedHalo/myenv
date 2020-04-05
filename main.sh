@@ -3,6 +3,13 @@
 # One-liner
 # git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/main.sh -u -a
 
+# Needs to run as sudo
+if [ "$EUID" -ne 0 ]
+then
+    echo 'Please run with sudo!'
+    exit 1
+fi
+
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 . "$DIR/functions.sh"
