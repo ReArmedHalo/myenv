@@ -226,7 +226,7 @@ menuPrompt() {
         printf '%s==============================\n' "$tty_blue"
         printf '%sWhat do you want to do?\n' "$tty_white"
         printf '%sA) Run all tasks\n' "$tty_bold$tty_blue"
-        printf '%sD) Clone dot files from GitHub\n" "$tty_bold$tty_blue'
+        printf '%sD) Clone dot files from GitHub\n' "$tty_bold$tty_blue'
         printf '%sL) Install and configure packages necessary for Laravel development\n' "$tty_bold$tty_blue"
         printf '%sP) Install support packages only (Brew, Composer and ZSH are not installed)\n' "$tty_bold$tty_blue"
         printf '%sS) Install SSH and GPG keys from BitWarden\n' "$tty_bold$tty_blue"
