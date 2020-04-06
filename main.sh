@@ -131,7 +131,6 @@ bwUnlock() {
         bw config server "$BW_SERVER"
         printf "%sPlease login to %sBitWarden%s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_reset"
         export BW_SESSION=$(bw login --raw)
-        fi
     else
         export BW_SESSION=$(bw unlock --raw)
     fi
