@@ -126,8 +126,8 @@ bwUnlock() {
         printf "myenv.sh --bwserver=https://%s\n" "$tty_reset"
         exit 1
     fi
-    BWSTATE=$(bw login --check 2>&1)
-    if [ $BWSTATE = "You are not logged in.") ]; then
+    bw login --check 2>&1
+    if [ $? ]; then
         bw config server "$BW_SERVER"
         printf "%sPlease login to %sBitWarden%s: %s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_green" "$BW_SERVER$tty_reset"
         export BW_SESSION=$(bw login --raw)
