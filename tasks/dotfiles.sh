@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 
-DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-. "$DIR/../functions.sh"
-
 runTask() {
     installPackage git
-    git clone https://github.com/ReArmedHalo/dotfiles.git ~/dotfiles
-
-    if [ $? = 0 ]; then
-        ln -sf ~/dotfile/.zshrc ~/.zshrc
+    if [ -d ~/dotfiles ]; then
+        git -C "~/dotfiles" pull
+    else
+        git clone https://github.com/ReArmedHalo/dotfiles.git "~/dotfiles"
+        if [ $? = 0 ]; then
+            ln -sf "~/dotfile/.zshrc" "~/.zshrc"
+        fi
+        chown dustin: -R "~/dotfiles"
+        chown dustin: "~/.zshrc"
     fi
 }
