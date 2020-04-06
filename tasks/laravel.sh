@@ -40,6 +40,6 @@ runTask() {
         echo 'export PATH=$PATH:$HOME/.config/composer/vendor/bin/' >> ~/.zshenv
     fi
     export PATH="$PATH:$HOME/.config/composer/vendor/bin/"
-    composer global require cpriego/valet-linux)
+    composer global require cpriego/valet-linux
     valet install
 }
