@@ -120,16 +120,18 @@ installBitWarden() {
 }
 
 bwUnlock() {
-    if [ -z "$BW_SESSION" ]; then
-        if [ -z "$BW_SERVER" ]; then
-            printf "%sBitWarden server not provided.\n" "$tty_red"
-            printf "Set the variable and try again:\n"
-            printf "myenv.sh --bwserver=https://%s\n" "$tty_reset"
-            exit 1
-        fi
+    if [ -z "$BW_SERVER" ]; then
+        printf "%sBitWarden server not provided.\n" "$tty_red"
+        printf "Set the variable and try again:\n"
+        printf "myenv.sh --bwserver=https://%s\n" "$tty_reset"
+        exit 1
+    fi
+
+    if [ "$(bw login --check)" != "You are logged in!" ]; then
         bw config server "$BW_SERVER"
         printf "%sPlease login to %sBitWarden%s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_reset"
         export BW_SESSION=$(bw login --raw)
+        fi
     else
         export BW_SESSION=$(bw unlock --raw)
     fi

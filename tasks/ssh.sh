@@ -27,13 +27,11 @@ runTask() {
     bw lock
 
     gpg --import < "$HOME/bw-private.gpg"
-    gpg --import < "$HOME/bw-public.gpg"
     rm -f "$HOME/bw-private.gpg"
-    rm -f "$HOME/bw-public.gpg"
 
     installPackage git
-    git config --global user.name='Dustin Schreiber'
-    git config --global user.email=dustin@schreiber.us
+    git config --global user.name "Dustin Schreiber"
+    git config --global user.email "dustin@schreiber.us"
 
     git config --global user.signingkey 7EE17E53F4F57537
     git config --global commit.gpgsign true
