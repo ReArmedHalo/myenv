@@ -9,8 +9,8 @@ runTask() {
             brew install php@$PHPV
             ;;
         "ubuntu")
-            installPackage "wget software-properties-common libnss3-tool"
-            sudo add-apt-repository ppa:ondrej/php
+            installPackage "wget software-properties-common libnss3-tools xsel mariadb-server"
+            sudo add-apt-repository -y ppa:ondrej/php
             sudo apt-get update
             #PHPV=$(brew info php --json | jq -r '.[0].aliases[0]')
             sudo apt-get install -y php$PHPV-cli php$PHPV-curl php$PHPV-mbstring php$PHPV-xml php$PHPV-zip
@@ -39,4 +39,22 @@ runTask() {
     export PATH="$PATH:$HOME/.config/composer/vendor/bin/"
     composer global require cpriego/valet-linux
     valet install
+    mkdir "$HOME/code"
+    valet park "$HOME/code"
+
+    # DNSMasq configuration (depends on VPN interface)
+    case $OS_NAME in
+        "ubuntu")
+            #echo 'listen-address=10.0.10.52' >> /etc/dnsmasq.d/options
+            #echo 'listen-address=10.8.0.1' >> /etc/dnsmasq.d/options
+            #echo 'address=/.test/10.0.10.52' > /etc/dnsmasq.d/valet
+            #echo 'address=/.test/10.8.0.1' > /etc/dnsmasq.d/valet
+            sudo systemctl restart dnsmasq
+            ;;
+        "centos")
+
+            ;;
+    esac
+
+    mysql_secure_installation
 }
