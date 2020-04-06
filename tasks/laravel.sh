@@ -9,7 +9,7 @@ runTask() {
             brew install php@$PHPV
             ;;
         "ubuntu")
-            installPackage "wget software-properties-common libnss3-tools xsel mariadb-server"
+            installPackages "wget software-properties-common libnss3-tools xsel mariadb-server"
             sudo add-apt-repository -y ppa:ondrej/php
             sudo apt-get update
             #PHPV=$(brew info php --json | jq -r '.[0].aliases[0]')

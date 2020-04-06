@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
 runTask() {
-    installPackage "curl git zip unzip jq"
+    installPackage curl
+    installPackage git
+    installPackage zip
+    installPackage unzip
+    installPackage jq
 }

@@ -6,7 +6,7 @@ secureSSH() {
 }
 
 runTask() {
-    installPackage jq mosh
+    installPackage jq
     installBitWarden
 
     brew install mosh
