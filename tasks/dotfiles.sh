@@ -9,7 +9,7 @@ runTask() {
         if [ $? = 0 ]; then
             ln -sf "~/dotfile/.zshrc" "~/.zshrc"
         fi
-        chown dustin: -R "~/dotfiles"
-        chown dustin: "~/.zshrc"
+        chown $MYSELF: -R "~/dotfiles"
+        chown $MYSELF: "~/.zshrc"
     fi
 }

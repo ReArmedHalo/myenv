@@ -13,6 +13,8 @@ fi
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
+MYSELF=$(logname)
+
 # String formatter
 if [[ -t 1 ]]; then
   tty_escape() { printf "\033[%sm" "$1"; }
@@ -99,6 +101,8 @@ installBrew() {
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.zshenv
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.bashrc
             eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) # Add to the current shell
+            chown $MYSELF: ~/.bashrc
+            chown $MYSELF: ~/.zshenv
         fi
     fi
     unset CI

@@ -3,6 +3,6 @@
 runTask() {
     installPackage zsh
     
-    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended"
-    chsh -s $(which zsh)
+    su $MYSELF -c "sh -c '$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh) --unattended'"
+    su $MYSELF -c "chsh -s $(which zsh)"
 }
