@@ -2,9 +2,9 @@
 
 # String formatter
 if [[ -t 1 ]]; then
-  tty_escape() { printf "\033[%sm" "$1" }
+  tty_escape() { printf "\033[%sm" "$1"; }
 else
-  tty_escape() { : }
+  tty_escape() { :; }
 fi
 
 tty_bold="$(tty_escape 1)"
