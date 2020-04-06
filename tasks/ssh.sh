@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 
 runTask() {
+    installPackage jq
     installBitWarden
 
     if [ ! "$OS_NAME" = "macOS" ]; then
@@ -25,8 +26,8 @@ runTask() {
     
     bw lock
 
-    gpg —import < "$HOME/bw-private.gpg"
-    gpg —import < "$HOME/bw-public.gpg"
+    gpg --import < "$HOME/bw-private.gpg"
+    gpg --import < "$HOME/bw-public.gpg"
     rm -f "$HOME/bw-private.gpg"
     rm -f "$HOME/bw-public.gpg"
 
