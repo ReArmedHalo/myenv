@@ -7,7 +7,7 @@ runTask() {
     else
        git clone https://github.com/ReArmedHalo/dotfiles.git "$HOME/dotfiles"
         if [ $? = 0 ]; then
-           ln -sf "$HOME/dotfile/.zshrc" "$HOME/.zshrc"
+            ln -sf ~/dotfile/.zshrc ~/.zshrc
         fi
     fi
 }
