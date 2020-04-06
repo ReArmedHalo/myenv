@@ -234,7 +234,7 @@ menuPrompt() {
         printf '%sV) Install OpenVPN Server and configure client profile\n' "$tty_bold$tty_blue"
         printf '%sZ) Install ZSH and Oh-My-Zsh\n' "$tty_bold$tty_blue"
         printf '%s\n' "$tty_reset"
-        printf '%sSelect an option:%s' "$tty_white" "$tty_bold$tty_green"
+        printf '%sSelect an option:%s ' "$tty_white" "$tty_bold$tty_green"
         read selection
         printf '%s' "$tty_reset"
         case "$selection" in

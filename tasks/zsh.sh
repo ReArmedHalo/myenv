@@ -8,6 +8,8 @@ runTask() {
     chsh -s $(which zsh)
     printf '%s' "$tty_reset"
     if [ -d ~/dotfiles ]; then
-        ln -s ~/dotfile/.zshrc ~/.zshrc
+        if [ ! -L ~/.zshrc ]; then
+            ln -s ~/dotfile/.zshrc ~/.zshrc
+        fi
     fi
 }
