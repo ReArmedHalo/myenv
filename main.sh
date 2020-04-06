@@ -117,10 +117,10 @@ installBitWarden() {
 
 bwUnlock() {
     if [ -z $BW_SESSION ]; then
-        if [ -z "$BW_SESSION" ]; then
-            printf "${tty_red}BW_SERVER variable not defined.\n"
+        if [ -z $BW_SERVER ]; then
+            printf "${tty_red}BitWarden server not provided.\n"
             printf "Set the variable and try again:\n"
-            printf "BW_SERVER=https://${tty_reset}\n"
+            printf "myenv.sh --bwserver=https://${tty_reset}\n"
             exit 1
         fi
         bw config server $BW_SERVER
@@ -273,46 +273,52 @@ ARG_VPN=0 # --vpn -v
 # Install ZSH and Oh-My-Zsh
 ARG_ZSH=0 # --zsh -z
 
-while [ $# -gt 0 ]; do
-    case "$1" in
-        --unattended|-u)
-            ARG_UNATTENDED=1
-            ;;
-        --all|-a)
-            ARG_DOTFILES=1
-            ARG_LARAVEL=1
-            ARG_SSH=1
-            ARG_VPN=1
-            ARG_ZSH=1
-            ;;
-        --dotfiles|-d)
-            ARG_DOTFILES=1
-            ;;
-        --laravel|-l)
-            ARG_LARAVEL=1
-            ;;
-        --packages|-p)
-            ARG_PACKAGES=1
-            ;;
-        --ssh|-s)
-            ARG_SSH=1
-            ;;
-        --vpn|-v)
-            ARG_VPN=1
-            ;;
-        --zsh|-z)
-            ARG_ZSH=1
-            ;;
-        *)
-            printf "${tty_red}"
-            printf "***************************\n"
-            printf "Error: Invalid argument: $1\n"
-            printf "***************************\n"
-            printf "${tty_reset}"
-            exit 1
-        esac
-    shift
-done
+while [[ $# -gt 0 ]]
+do
+key="$1"
+case $key in
+    --bwserver)
+        BW_SERVER=$2
+        shift
+        shift
+        ;;
+    --unattended|-u)
+        ARG_UNATTENDED=1
+        shift
+        ;;
+    --all|-a)
+        ARG_DOTFILES=1
+        ARG_LARAVEL=1
+        ARG_SSH=1
+        ARG_VPN=1
+        ARG_ZSH=1
+        shift
+        ;;
+    --dotfiles|-d)
+        ARG_DOTFILES=1
+        shift
+        ;;
+    --laravel|-l)
+        ARG_LARAVEL=1
+        shift
+        ;;
+    --packages|-p)
+        ARG_PACKAGES=1
+        shift
+        ;;
+    --ssh|-s)
+        ARG_SSH=1
+        shift
+        ;;
+    --vpn|-v)
+        ARG_VPN=1
+        shift
+        ;;
+    --zsh|-z)
+        ARG_ZSH=1
+        shift
+        ;;
+esac
 
 header
 systemState
