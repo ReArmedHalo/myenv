@@ -102,6 +102,11 @@ installBrew() {
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".zshenv"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".bashrc"
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
+        else
+            # Let's make sure Brew is in the path
+            if [ ! -n "$BREW_PATH" ]; then
+                eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
+            fi
         fi
     fi
     unset CI
@@ -123,7 +128,7 @@ bwUnlock() {
             exit 1
         fi
         bw config server "$BW_SERVER"
-        printf "%sPlease login to %sBitWarden%s" "$tty_bold$tty_blue" "$tty_white" "$tty_reset"
+        printf "%sPlease login to %sBitWarden%s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_reset"
         export BW_SESSION=$(bw login --raw)
     else
         export BW_SESSION=$(bw unlock --raw)
