@@ -32,6 +32,7 @@ tty_reset="$(tty_escape 0)"
 
 ttyReset() {
     printf '%s' "$tty_reset"
+    exit $?
 }
 
 trap 'ttyReset' SIGINT
@@ -181,7 +182,7 @@ systemStateDetection() {
 
     # PHP
     PHP_PATH="$(command -v php)"
-    if [ -n PHP_PATH ]; then PHP_VERSION="$(${PHP_PATH} -r 'echo PHP_VERSION;')"; fi
+    if [ -n "$PHP_PATH" ]; then PHP_VERSION="$(${PHP_PATH} -r 'echo PHP_VERSION;')"; fi
 
     # ZSH
     ZSH_PATH="$(command -v zsh)"
