@@ -19,8 +19,10 @@ doTask() {
     printf "${tty_blue}=========================\n"
     printf "${tty_white}Running task: $1\n"
     printf "${tty_blue}=========================\n"
-    . "$DIR/tasks/$1.sh"
-    TASK_RETURN=runTask
+    BACKUP_DIR=$DIR # Backup DIR so we can reset after task run
+    . "$DIR/$1.sh"
+    TASK_RETURN=$(runTask)
+    DIR=$BACKUP_DIR
     printf "${tty_blue}=========================\n"
     printf "${tty_white}Task complete: $1\n"
     printf "Returned: $TASK_RETURN\n"
