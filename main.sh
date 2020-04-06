@@ -59,10 +59,10 @@ isPackageInstalled() {
 installPackages() { # Skips checking if already installed
     case "$OS_NAME" in
         "centos")
-            return "$(sudo yum install -y "$1")"
+            return "$(sudo yum install -y $1)"
             ;;
         "ubuntu")
-            return "$(sudo apt-get install -y "$1")"
+            return "$(sudo apt-get install -y $1)"
             ;;
     esac
 }
