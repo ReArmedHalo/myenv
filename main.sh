@@ -191,7 +191,7 @@ systemStateDetection() {
 systemState() {
     systemStateDetection
     printf "%sOS: %s\n" "$tty_blue$tty_bold" "$tty_reset$tty_white$OS_PRETTY"
-    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server:%s %s" "$tty_blue$tty_bold" "$tty_reset$tty_white$BW_SERVER"; fi
+    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server:%s %s\n" "$tty_blue$tty_bold" "$tty_reset$tty_white" "$BW_SERVER"; fi
     if [ -n "$BW_PATH" ]; then checkbox "BitWarden Installed" 1; else checkbox "BitWarden Not Installed"; fi
     if [ -n "$BREW_PATH" ]; then checkbox "Brew Installed" 1; else checkbox "Brew Not Installed"; fi
     if [ -n "$COMPOSER_PATH" ]; then checkbox "Composer Installed" 1; else checkbox "Composer Not Installed"; fi
