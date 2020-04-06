@@ -26,10 +26,10 @@ runTask() {
     
     bw lock
 
-    su $MYSELF -c "gpg —import < ~/bw-private.gpg"
-    su $MYSELF -c "gpg —import < ~/bw-public.gpg"
-    rm -f "~/bw-private.gpg"
-    rm -f "~/bw-public.gpg"
+    su $MYSELF -c "gpg —import < '$HOME/bw-private.gpg'"
+    su $MYSELF -c "gpg —import < '$HOME/bw-public.gpg'"
+    rm -f "$HOME/bw-private.gpg"
+    rm -f "$HOME/bw-public.gpg"
 
     installPackage git
     su $MYSELF -c "git config --global user.name=Dustin Schreiber"

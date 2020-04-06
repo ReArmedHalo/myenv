@@ -98,11 +98,11 @@ installBrew() {
         if [ ! -d "/home/linuxbrew" ]; then
             CI=1
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.zshenv
-            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.bashrc
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> "$HOME/.zshenv"
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> "$HOME/.bashrc"
             eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) # Add to the current shell
-            chown $MYSELF: ~/.bashrc
-            chown $MYSELF: ~/.zshenv
+            chown $MYSELF: "$HOME/.bashrc"
+            chown $MYSELF: "$HOME/.zshenv"
         fi
     fi
     unset CI
