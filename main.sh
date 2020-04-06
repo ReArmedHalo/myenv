@@ -91,13 +91,13 @@ detectOS() {
 installBrew() {
     if [ $OS_NAME = 'macOS' ]; then
         if [ ! -d "/usr/local/Homebrew/bin/brew" ]; then
-            CI=1
+            export CI=1
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
         fi
     else
         if [ ! -d "/home/linuxbrew" ]; then
             installPackage curl
-            CI=1
+            export CI=1
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".zshenv"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".bashrc"
@@ -126,8 +126,8 @@ bwUnlock() {
         printf "myenv.sh --bwserver=https://%s\n" "$tty_reset"
         exit 1
     fi
-
-    if [ $(bw login --check | grep -q "You are not logged in.") ]; then
+    BWSTATE=$(bw login --check 2>&1)
+    if [ $BWSTATE = "You are not logged in.") ]; then
         bw config server "$BW_SERVER"
         printf "%sPlease login to %sBitWarden%s: %s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_green" "$BW_SERVER$tty_reset"
         export BW_SESSION=$(bw login --raw)
