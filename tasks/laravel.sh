@@ -7,19 +7,16 @@ runTask() {
     case $OS_NAME in
         "macOS")
             brew install php@$PHPV
-            break
             ;;
         "ubuntu")
             installPackage "wget software-properties-common libnss3-tool"
             sudo add-apt-repository ppa:ondrej/php
             sudo apt-get update
             #PHPV=$(brew info php --json | jq -r '.[0].aliases[0]')
-            sudo apt-get install -y php$PHPV-cli php$PHPV-curl php$PHPV-mbstring php$PHPV-mcrypt php$PHPV-xml php$PHPV-zip
-            break
+            sudo apt-get install -y php$PHPV-cli php$PHPV-curl php$PHPV-mbstring php$PHPV-xml php$PHPV-zip
             ;;
         "centos")
 
-            break
             ;;
     esac
 
@@ -35,7 +32,7 @@ runTask() {
     else
         php composer-setup.php --quiet
         rm composer-setup.php
-        mv composer.phar /usr/local/bin/composer
+        sudo mv composer.phar /usr/local/bin/composer
         echo 'export PATH=$PATH:$HOME/.config/composer/vendor/bin/' >> ~/.bashrc
         echo 'export PATH=$PATH:$HOME/.config/composer/vendor/bin/' >> ~/.zshenv
     fi
