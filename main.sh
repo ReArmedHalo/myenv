@@ -154,16 +154,17 @@ allowFirewallService() {
 }
 
 doTask() {
-    printf "${tty_reset}"
-    printf "${tty_blue}=========================\n"
-    printf "${tty_white}Running task: $1\n"
-    printf "${tty_blue}=========================\n"
+    printf '%s' "$tty_reset"
+    printf '%s=========================\n' "$tty_blue"
+    printf "%sRunning task: %s\n' "$tty_white" "$1"
+    printf '%s=========================\n' "$tty_blue"
+    printf '%s' "$tty_reset$tty_white"
     . "$DIR/tasks/$1.sh"
     runTask
-    printf "${tty_blue}=========================\n"
-    printf "${tty_white}Task complete: $1\n"
-    printf "${tty_blue}=========================\n"
-    printf "${tty_reset}\n"
+    printf '%s=========================\n' "$tty_blue"
+    printf '%sTask complete: %s\n' "$tty_white" "$1"
+    printf '%s=========================\n' "$tty_blue"
+    printf '%s\n' "$tty_reset"
 }
 
 header() {
