@@ -32,7 +32,7 @@ runTask() {
     rm -f "$HOME/bw-public.gpg"
 
     installPackage git
-    su $MYSELF -c "git config --global user.name=Dustin Schreiber"
+    su $MYSELF -c "git config --global user.name='Dustin Schreiber'"
     su $MYSELF -c "git config --global user.email=dustin@schreiber.us"
 
     su $MYSELF -c "git config --global user.signingkey 7EE17E53F4F57537"
