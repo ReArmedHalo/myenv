@@ -104,7 +104,7 @@ installBrew() {
         if [ ! -d "/home/linuxbrew" ]; then
             installPackage curl
             CI=1
-            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            su "$MYSELF" -c "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)\""
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".zshenv"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".bashrc"
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
