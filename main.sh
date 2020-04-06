@@ -30,6 +30,12 @@ tty_green="$(tty_escape 32)"
 tty_white="$(tty_escape 97)"
 tty_reset="$(tty_escape 0)"
 
+ttyReset() {
+    printf '%s' "$tty_reset"
+}
+
+trap 'ttyReset' SIGINT
+
 checkbox() {
     if [ -n "$2" ]
     then
@@ -192,6 +198,7 @@ systemState() {
     if [ -n "$NGINX_DETECTED" ]; then checkbox "NGINX Installed" 1; else checkbox "NGINX Not Installed"; fi
     if [ -n "$PHP_PATH" ]; then checkbox "PHP Installed - $PHP_VERSION" 1; else checkbox "PHP Not Installed"; fi
     if [ -n "$ZSH_PATH" ]; then checkbox "ZSH Installed" 1; else checkbox "ZSH Not Installed"; fi
+    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server: %s" "$tty_bold$tty_blue" "$BW_SERVER"; fi
 }
 
 menuPrompt() {
@@ -318,6 +325,14 @@ case $key in
         ARG_ZSH=1
         shift
         ;;
+    *)
+        printf "%s" "$tty_red"
+        printf "***************************\n"
+        printf "Error: Invalid argument: %s\n" "$1"
+        printf "***************************\n"
+        printf "%s" "$tty_reset"
+        exit 1
+    ;;
 esac
 done
 
