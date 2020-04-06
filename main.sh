@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-# One-liner
-# git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/main.sh -u -a
+# One-liner, change bwserver argument
+# git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/main.sh --bwserver SERVER
 
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
@@ -156,7 +156,7 @@ allowFirewallService() {
 doTask() {
     printf '%s' "$tty_reset"
     printf '%s=========================\n' "$tty_blue"
-    printf "%sRunning task: %s\n' "$tty_white" "$1"
+    printf '%sRunning task: %s\n' "$tty_white" "$1"
     printf '%s=========================\n' "$tty_blue"
     printf '%s' "$tty_reset$tty_white"
     . "$DIR/tasks/$1.sh"
