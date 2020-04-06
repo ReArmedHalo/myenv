@@ -127,11 +127,12 @@ bwUnlock() {
         exit 1
     fi
 
-    if [ bw login --check | grep -q "You are not logged in." ]; then
+    if [ $(bw login --check | grep -q "You are not logged in.") ]; then
         bw config server "$BW_SERVER"
         printf "%sPlease login to %sBitWarden%s: %s\n" "$tty_bold$tty_blue" "$tty_white" "$tty_green" "$BW_SERVER$tty_reset"
         export BW_SESSION=$(bw login --raw)
     else
+        printf "%sPlease unlock BitWarden%s\n" "$tty_bold$tty_blue" "$tty_reset"
         export BW_SESSION=$(bw unlock --raw)
     fi
 }
