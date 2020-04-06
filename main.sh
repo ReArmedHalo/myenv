@@ -3,13 +3,6 @@
 # One-liner
 # git clone https://github.com/ReArmedHalo/myenv.git ~/myenv && /bin/bash ~/myenv/main.sh -u -a
 
-# Needs to run as sudo
-if [ "$EUID" -ne 0 ]
-then
-    echo 'Please run with sudo!'
-    exit 1
-fi
-
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 
@@ -49,6 +42,7 @@ checkbox() {
 isPackageInstalled() {
     case "$OS_NAME" in
         "centos")
+            # Does this need sudo?
             if yum list installed "$1" >/dev/null 2>&1; then
                 return 0
             fi
@@ -66,10 +60,10 @@ installPackage() {
     if ! isPackageInstalled "$1"; then
         case "$OS_NAME" in
             "centos")
-                return "$(yum install -y "$1")"
+                return "$(sudo yum install -y "$1")"
                 ;;
             "ubuntu")
-                return "$(apt install -y "$1")"
+                return "$(sudo apt-get install -y "$1")"
                 ;;
         esac
     fi
@@ -104,12 +98,10 @@ installBrew() {
         if [ ! -d "/home/linuxbrew" ]; then
             installPackage curl
             CI=1
-            su "$MYSELF" -c "/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)\""
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".zshenv"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".bashrc"
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
-            chown "$MYSELF": ~/".bashrc"
-            chown "$MYSELF": ~/".zshenv"
         fi
     fi
     unset CI
