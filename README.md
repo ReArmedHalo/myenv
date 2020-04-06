@@ -11,9 +11,9 @@ Scripts Functionality includes / goals:
   - This is accomplished except since we don't run as sudo we may need multiple inputs for sudo
   - BitWarden login/unlock require user input as well
   - I don't see any way to fix the above so marking this task as accomplished
-- [-] Support macOS, Ubuntu and CentOS for all functions :boom:
+- [ ] Support macOS, Ubuntu and CentOS for all functions :boom:
   - [X] Script was written and tested on Ubuntu so thus far works on that
-  - [-] macOS had some function tests but not a full run to test everything
+  - [ ] macOS had some function tests but not a full run to test everything
   - [ ] CentOS has not yet been tested
   
 > This is a living repository and my initial commit was focused on this all being in one script, I've since decided to **_not_** do that but instead have everything split into it's own specialized script and have a nice selector menu to handle provisioning.
