@@ -10,8 +10,8 @@ runTask() {
         brew install gpg
     fi
 
-    if [ ! -d '~/.ssh' ]
-    then mkdir ~/.ssh
+    if [ ! -d "$HOME/.ssh" ]; then
+        mkdir ~/.ssh
         chmod 700 ~/.ssh
     fi
 
