@@ -12,20 +12,129 @@ fi
 
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-. "$DIR/functions.sh"
+
+# String formatter
+if [[ -t 1 ]]; then
+  tty_escape() { printf "\033[%sm" "$1"; }
+else
+  tty_escape() { :; }
+fi
+
+tty_bold="$(tty_escape 1)"
+tty_underline="$(tty_escape "4;39")"
+
+tty_blue="$(tty_escape 34)"
+tty_red="$(tty_escape 31)"
+tty_green="$(tty_escape 32)"
+tty_white="$(tty_escape 97)"
+tty_reset="$(tty_escape 0)"
+
+checkbox() {
+    if [ -n "$2" ]
+    then
+        printf "${tty_blue}[X]${tty_reset}${tty_green} $1 ${tty_reset}\n"
+    else
+        printf "${tty_blue}[ ]${tty_reset}${tty_red} $1 ${tty_reset}\n"
+    fi
+}
+
+isPackageInstalled() {
+    case "$OS_NAME" in
+        "centos")
+            if yum list installed "$1" >/dev/null 2>&1; then
+                return 0
+            fi
+            ;;
+        "ubuntu")
+            if dpkg --get-selections | grep -q "^$1[[:space:]]*install$" >/dev/null 2>&1; then
+                return 0
+            fi
+            ;;
+    esac
+    return 1
+}
+
+installPackage() {
+    if ! isPackageInstalled $1; then
+        case "$OS_NAME" in
+            "centos")
+                return $(yum install -y $1)
+                ;;
+            "ubuntu")
+                return $(apt install -y $1)
+                ;;
+        esac
+    fi
+}
+
+detectOS() {
+    if [ -e /etc/os-release ]; then
+        source /etc/os-release
+        if [ "$ID" = "ubuntu" ] || [ "$ID" = "centos" ]; then
+            OS_NAME="${ID}"
+            OS_PRETTY="${PRETTY_NAME}"
+        else
+            printf "${tty_red}Unsupported OS.${tty_reset}"
+            return 1
+        fi
+    elif [ $(uname) = "Darwin" ]; then
+        OS_NAME="macOS"
+        OS_PRETTY="macOS $(sw_vers -productVersion)"
+    else
+        printf "${tty_red}Failed to detect OS! /etc/os-release not found and uname is not Darwin.${tty_reset}"
+        return 1
+    fi
+}
+
+installBrew() {
+    if [ $OS_NAME = 'macOS' ]; then
+        if [ ! -d "/usr/local/Homebrew/bin/brew" ]; then
+            CI=1
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+        fi
+    else
+        if [ ! -d "/home/linuxbrew" ]; then
+            CI=1
+            /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.zshenv
+            echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/.bashrc
+            eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv) # Add to the current shell
+        fi
+    fi
+    unset CI
+}
+
+installBitWarden() {
+    if [ ! -e $(command -v bw) ]; then
+        installBrew
+        brew install bitwarden-cli
+    fi
+}
+
+bwUnlock() {
+    if [ -z $BW_SESSION ]; then
+        if [ -z "$BW_SESSION" ]; then
+            printf "${tty_red}BW_SERVER variable not defined.\n"
+            printf "Set the variable and try again:\n"
+            printf "BW_SERVER=https://${tty_reset}\n"
+            exit 1
+        fi
+        bw config server $BW_SERVER
+        export BW_SESSION=$(bw login --raw)
+    else
+        export BW_SESSION=$(bw unlock --raw)
+    fi
+}
 
 doTask() {
     printf "${tty_reset}"
     printf "${tty_blue}=========================\n"
     printf "${tty_white}Running task: $1\n"
     printf "${tty_blue}=========================\n"
-    BACKUP_DIR=$DIR # Backup DIR so we can reset after task run
     . "$DIR/tasks/$1.sh"
-    TASK_RETURN=$(runTask)
-    DIR=$BACKUP_DIR
+    runTask
     printf "${tty_blue}=========================\n"
     printf "${tty_white}Task complete: $1\n"
-    printf "Returned: $TASK_RETURN\n"
     printf "${tty_blue}=========================\n"
     printf "${tty_reset}\n"
 }
@@ -221,7 +330,7 @@ if [ "$ARG_UNATTENDED" = "0" ]; then
         if [ -n "$ARG_BW_SERVER" ]; then
             doTask ssh
         else
-            printf "${tty_red}BW_SERVER variable not defined. Required for unattended operations with the 'ssh' task.\n"
+            printf "${tty_red}BW_SERVER variable not defined. Required for operations with the 'ssh' task.\n"
             printf "Set the variable and try again:\n"
             printf "BW_SERVER=https://\n"
             exit 1

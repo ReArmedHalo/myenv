@@ -1,11 +1,6 @@
 #!/usr/bin/env bash
 
-DIR="${BASH_SOURCE%/*}"
-if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
-. "$DIR/../functions.sh"
-
 runTask() {
-    . "$DIR/../support/bitwarden.sh"
     installBitWarden
 
     if [ ! "$OS_NAME" = "macOS" ]; then

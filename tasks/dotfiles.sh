@@ -10,8 +10,5 @@ runTask() {
 
     if [ $? = 0 ]; then
         ln -sf ~/dotfile/.zshrc ~/.zshrc
-        
-        return 0
     fi
-    return $?
 }
