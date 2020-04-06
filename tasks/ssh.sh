@@ -1,8 +1,18 @@
 #!/usr/bin/env bash
 
+secureSSH() {
+    sed -i 's/#PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+    sed -i 's/PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config
+
+    sed -i 's/#PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+    sed -i 's/PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config
+}
+
 runTask() {
-    installPackage jq
+    installPackage jq mosh
     installBitWarden
+
+    brew install mosh
 
     if [ ! "$OS_NAME" = "macOS" ]; then
         installPackage gpg
@@ -22,7 +32,7 @@ runTask() {
     chmod 644 ~/.ssh/id_rsa.pub
 
     bw get attachment vnojbbfmdet6jdjtm5t71w712yehtyxp --itemid 86c45ebf-c911-436d-9909-ab940026f30c --output "$HOME/bw-private.gpg"
-    
+
     bw lock
 
     gpg --import < "$HOME/bw-private.gpg"
@@ -34,4 +44,6 @@ runTask() {
 
     git config --global user.signingkey 7EE17E53F4F57537
     git config --global commit.gpgsign true
+    
+    secureSSH
 }

@@ -137,6 +137,22 @@ bwUnlock() {
     fi
 }
 
+allowFirewallService() {
+    case $OS_NAME in
+        "ubuntu")
+            sudo ufw allow $1
+            break
+            ;;
+        "centos")
+            sudo firewall-cmd --permanent --add-service=$1
+            break
+            ;;
+        *)
+            break
+            ;;
+    esac
+}
+
 doTask() {
     printf "${tty_reset}"
     printf "${tty_blue}=========================\n"
@@ -192,7 +208,8 @@ systemStateDetection() {
 systemState() {
     systemStateDetection
     printf "%sOS: %s\n" "$tty_blue$tty_bold" "$tty_reset$tty_white$OS_PRETTY"
-    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server:%s %s\n" "$tty_blue$tty_bold" "$tty_reset$tty_white" "$BW_SERVER"; fi
+    if [ -n "$BW_SERVER" ]; then printf '%sBitWarden Server:%s %s\n' "$tty_blue$tty_bold" "$tty_reset$tty_white" "$BW_SERVER"; fi
+    if [ -n "$ARG_PHP_VER" ]; then printf '%sPHP Version:%s %s\n' "$tty_blue$tty_bold" "$tty_reset$tty_white" "$ARG_PHP_VER"; fi
     if [ -n "$BW_PATH" ]; then checkbox "BitWarden Installed" 1; else checkbox "BitWarden Not Installed"; fi
     if [ -n "$BREW_PATH" ]; then checkbox "Brew Installed" 1; else checkbox "Brew Not Installed"; fi
     if [ -n "$COMPOSER_PATH" ]; then checkbox "Composer Installed" 1; else checkbox "Composer Not Installed"; fi
@@ -205,22 +222,23 @@ systemState() {
 
 menuPrompt() {
     while true; do
-        printf "${tty_reset}\n"
-        printf "${tty_blue}==============================\n"
-        printf "${tty_white}What do you want to do?\n"
-        printf "${tty_bold}${tty_blue} A) Run all tasks\n"
-        printf "${tty_bold}${tty_blue} D) Clone dot files from GitHub\n"
-        printf "${tty_bold}${tty_blue} L) Install and configure packages necessary for Laravel development\n"
-        printf "${tty_bold}${tty_blue} P) Install support packages only (Brew, Composer and ZSH are not installed)\n"
-        printf "${tty_bold}${tty_blue} S) Install SSH and GPG keys from BitWarden\n"
-        printf "${tty_bold}${tty_blue} V) Install OpenVPN Server and configure client profile\n"
-        printf "${tty_bold}${tty_blue} Z) Install ZSH and Oh-My-Zsh\n"
-        printf "${tty_reset}\n"
-        printf "${tty_white}Select an option: ${tty_bold}${tty_green}"
+        printf '\n' "$tty_reset"
+        printf '%s==============================\n' "$tty_blue"
+        printf '%sWhat do you want to do?\n' "$tty_white"
+        printf '%sA) Run all tasks\n' "$tty_bold$tty_blue"
+        printf '%sD) Clone dot files from GitHub\n" "$tty_bold$tty_blue'
+        printf '%sL) Install and configure packages necessary for Laravel development\n' "$tty_bold$tty_blue"
+        printf '%sP) Install support packages only (Brew, Composer and ZSH are not installed)\n' "$tty_bold$tty_blue"
+        printf '%sS) Install SSH and GPG keys from BitWarden\n' "$tty_bold$tty_blue"
+        printf '%sV) Install OpenVPN Server and configure client profile\n' "$tty_bold$tty_blue"
+        printf '%sZ) Install ZSH and Oh-My-Zsh\n' "$tty_bold$tty_blue"
+        printf '%s\n' "$tty_reset"
+        printf '%sSelect an option:%s' "$tty_white" "$tty_bold$tty_green"
         read selection
-        printf "${tty_reset}"
+        printf '%s' "$tty_reset"
         case "$selection" in
             a|A)
+                doTask packages
                 doTask dotfiles
                 doTask laravel
                 doTask ssh
@@ -281,6 +299,9 @@ ARG_VPN=0 # --vpn -v
 # Install ZSH and Oh-My-Zsh
 ARG_ZSH=0 # --zsh -z
 
+## PHP Version to install
+ARG_PHP_VER="7.4"
+
 while [[ $# -gt 0 ]]
 do
 key="$1";
@@ -325,6 +346,11 @@ case $key in
         ;;
     --zsh|-z)
         ARG_ZSH=1
+        shift
+        ;;
+    --php-version|-pv)
+        ARG_PHP_VER="$2"
+        shift
         shift
         ;;
     *)
