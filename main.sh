@@ -31,7 +31,7 @@ tty_white="$(tty_escape 97)"
 tty_reset="$(tty_escape 0)"
 
 ttyReset() {
-    printf '%s' "$tty_reset"
+    printf '%s\n' "$tty_reset"
     exit $?
 }
 
@@ -190,7 +190,8 @@ systemStateDetection() {
 
 systemState() {
     systemStateDetection
-    printf "${tty_blue}${tty_bold}OS: ${tty_reset}${tty_white}$OS_PRETTY\n"
+    printf "%sOS: %s\n" "$tty_blue$tty_bold" "$tty_reset$tty_white$OS_PRETTY"
+    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server:%s %s" "$tty_blue$tty_bold" "$tty_reset$tty_white$BW_SERVER"; fi
     if [ -n "$BW_PATH" ]; then checkbox "BitWarden Installed" 1; else checkbox "BitWarden Not Installed"; fi
     if [ -n "$BREW_PATH" ]; then checkbox "Brew Installed" 1; else checkbox "Brew Not Installed"; fi
     if [ -n "$COMPOSER_PATH" ]; then checkbox "Composer Installed" 1; else checkbox "Composer Not Installed"; fi
@@ -199,7 +200,6 @@ systemState() {
     if [ -n "$NGINX_DETECTED" ]; then checkbox "NGINX Installed" 1; else checkbox "NGINX Not Installed"; fi
     if [ -n "$PHP_PATH" ]; then checkbox "PHP Installed - $PHP_VERSION" 1; else checkbox "PHP Not Installed"; fi
     if [ -n "$ZSH_PATH" ]; then checkbox "ZSH Installed" 1; else checkbox "ZSH Not Installed"; fi
-    if [ -n "$BW_SERVER" ]; then printf "%sBitWarden Server: %s" "$tty_bold$tty_blue" "$BW_SERVER"; fi
 }
 
 menuPrompt() {
