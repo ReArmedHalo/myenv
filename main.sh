@@ -62,7 +62,7 @@ installPackages() { # Skips checking if already installed
             return "$(sudo yum install -y $1)"
             ;;
         "ubuntu")
-            sudo apt-get update
+            sudo apt-get update >/dev/null 2>&1
             return "$(sudo apt-get install -y $1)"
             ;;
     esac
@@ -75,7 +75,7 @@ installPackage() {
                 return "$(sudo yum install -y $1)"
                 ;;
             "ubuntu")
-                sudo apt-get update
+                sudo apt-get update >/dev/null 2>&1
                 return "$(sudo apt-get install -y $1)"
                 ;;
         esac
@@ -247,13 +247,13 @@ menuPrompt() {
         printf 'V) Install OpenVPN Server and configure client profile\n'
         printf 'Z) Install ZSH and Oh-My-Zsh\n'
         printf '\n'
-        printf 'Exit) Exit\n'
+        printf 'x) Exit\n'
         printf '%s\n' "$tty_reset"
         printf '%sSelect an option:%s ' "$tty_white" "$tty_bold$tty_green"
         read selection
         printf '%s' "$tty_reset"
         case "$selection" in
-            exit)
+            x|X)
                 return 0
                 ;;
             a|A)
