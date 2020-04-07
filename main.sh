@@ -109,7 +109,7 @@ installBrew() {
         fi
     else
         if [ ! -d "/home/linuxbrew" ]; then
-            installPackage curl
+            installPackages curl build-essential
             export CI=1
             /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
             echo 'eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)' >> ~/".zshenv"
@@ -117,9 +117,7 @@ installBrew() {
             eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
         else
             # Let's make sure Brew is in the path
-            if [ ! -n "$BREW_PATH" ]; then
-                eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
-            fi
+            eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)" # Add to the current shell
         fi
     fi
     unset CI
