@@ -62,6 +62,7 @@ installPackages() { # Skips checking if already installed
             return "$(sudo yum install -y $1)"
             ;;
         "ubuntu")
+            sudo apt-get update
             return "$(sudo apt-get install -y $1)"
             ;;
     esac
@@ -71,10 +72,11 @@ installPackage() {
     if ! isPackageInstalled "$1"; then
         case "$OS_NAME" in
             "centos")
-                return "$(sudo yum install -y "$1")"
+                return "$(sudo yum install -y $1)"
                 ;;
             "ubuntu")
-                return "$(sudo apt-get install -y "$1")"
+                sudo apt-get update
+                return "$(sudo apt-get install -y $1)"
                 ;;
         esac
     fi
@@ -176,6 +178,7 @@ doTask() {
     printf '%sTask complete: %s\n' "$tty_white" "$1"
     printf '%s=========================\n' "$tty_blue"
     printf '%s\n' "$tty_reset"
+    menuPrompt
 }
 
 header() {
@@ -237,18 +240,24 @@ menuPrompt() {
         printf '\n' "$tty_reset"
         printf '%s==============================\n' "$tty_blue"
         printf '%sWhat do you want to do?\n' "$tty_white"
-        printf '%sA) Run all tasks\n' "$tty_bold$tty_blue"
-        printf '%sD) Clone dot files from GitHub\n' "$tty_bold$tty_blue"
-        printf '%sL) Install and configure packages necessary for Laravel development\n' "$tty_bold$tty_blue"
-        printf '%sP) Install support packages only (Brew, Composer and ZSH are not installed)\n' "$tty_bold$tty_blue"
-        printf '%sS) Install SSH and GPG keys from BitWarden\n' "$tty_bold$tty_blue"
-        printf '%sV) Install OpenVPN Server and configure client profile\n' "$tty_bold$tty_blue"
-        printf '%sZ) Install ZSH and Oh-My-Zsh\n' "$tty_bold$tty_blue"
+        printf '%s' "$tty_bold$tty_green"
+        printf 'A) Run all tasks\n'
+        printf 'D) Clone dot files from GitHub\n'
+        printf 'L) Install and configure packages necessary for Laravel development\n'
+        printf 'P) Install support packages only (Brew, Composer and ZSH are not installed)\n'
+        printf 'S) Install SSH and GPG keys from BitWarden\n'
+        printf 'V) Install OpenVPN Server and configure client profile\n'
+        printf 'Z) Install ZSH and Oh-My-Zsh\n'
+        printf '\n'
+        printf 'Exit) Exit\n'
         printf '%s\n' "$tty_reset"
         printf '%sSelect an option:%s ' "$tty_white" "$tty_bold$tty_green"
         read selection
         printf '%s' "$tty_reset"
         case "$selection" in
+            exit)
+                return 0
+                ;;
             a|A)
                 doTask packages
                 doTask dotfiles

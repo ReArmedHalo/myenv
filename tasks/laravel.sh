@@ -9,7 +9,8 @@ runTask() {
             brew install php@$PHPV
             ;;
         "ubuntu")
-            installPackages "wget software-properties-common libnss3-tools xsel mariadb-server"
+            installPackages "jq wget software-properties-common libnss3-tools xsel mariadb-server"
+            if [ ! $? ]; then return 1; fi
             sudo add-apt-repository -y ppa:ondrej/php
             sudo apt-get update
             #PHPV=$(brew info php --json | jq -r '.[0].aliases[0]')
@@ -45,16 +46,13 @@ runTask() {
     # DNSMasq configuration (depends on VPN interface)
     case $OS_NAME in
         "ubuntu")
-            #echo 'listen-address=10.0.10.52' >> /etc/dnsmasq.d/options
-            #echo 'listen-address=10.8.0.1' >> /etc/dnsmasq.d/options
-            #echo 'address=/.test/10.0.10.52' > /etc/dnsmasq.d/valet
-            #echo 'address=/.test/10.8.0.1' > /etc/dnsmasq.d/valet
+            echo 'listen-address=10.8.0.1' >> /etc/dnsmasq.d/options
+            echo 'address=/.test/10.8.0.1' > /etc/dnsmasq.d/valet
             sudo systemctl restart dnsmasq
+            sudo systemctl start mysql
             ;;
         "centos")
 
             ;;
     esac
-
-    mysql_secure_installation
 }
