@@ -21,4 +21,5 @@ runTask() {
 
     sudo sed -i 's/push "redirect-gateway def1 bypass-dhcp"/push "route 10.8.0.1\/32 vpn_gateway"/g' /etc/openvpn/server.conf
     sudo systemctl restart openvpn@server
+    chown $MYSELF: $MYSELF.ovpn
 }

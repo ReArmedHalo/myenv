@@ -55,4 +55,7 @@ runTask() {
 
             ;;
     esac
+
+    composer global require laravel/installer
+    brew install nodejs
 }
