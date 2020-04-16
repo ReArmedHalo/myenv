@@ -121,6 +121,7 @@ installBrew() {
         fi
     fi
     unset CI
+    installPackage gcc
 }
 
 installBitWarden() {
