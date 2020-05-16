@@ -6,6 +6,9 @@ secureSSH() {
 }
 
 runTask() {
+    if [ "$OS_NAME" = "centos" ]; then
+        installPackage epel-release
+    fi
     installPackage jq
     installBitWarden
 

@@ -59,11 +59,11 @@ isPackageInstalled() {
 installPackages() { # Skips checking if already installed
     case "$OS_NAME" in
         "centos")
-            return "$(sudo yum install -y $1)"
+            sudo yum install -y $1
             ;;
         "ubuntu")
             sudo apt-get update >/dev/null 2>&1
-            return "$(sudo apt-get install -y $1)"
+            sudo apt-get install -y $1
             ;;
     esac
 }
@@ -72,11 +72,11 @@ installPackage() {
     if ! isPackageInstalled "$1"; then
         case "$OS_NAME" in
             "centos")
-                return "$(sudo yum install -y $1)"
+                sudo yum install -y $1
                 ;;
             "ubuntu")
                 sudo apt-get update >/dev/null 2>&1
-                return "$(sudo apt-get install -y $1)"
+                sudo apt-get install -y $1
                 ;;
         esac
     fi
@@ -122,6 +122,9 @@ installBrew() {
     fi
     unset CI
     installPackage gcc
+    if [ "$OS_NAME" = "centos" ]; then
+        brew install glibc
+    fi
 }
 
 installBitWarden() {
