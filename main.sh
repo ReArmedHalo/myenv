@@ -33,7 +33,7 @@ trap 'ttyReset' SIGINT
 checkbox() {
     if [ -n "$2" ]
     then
-        printf '%s[X]%s %s %s\n' "$tty_blue" "$tty_reset$tty_green" "$1" "$tty_reset"
+        printf '%s[%s✓%s]%s %s %s\n' "$tty_blue" "$tty_green" "$tty_blue" "$tty_reset$tty_green" "$1" "$tty_reset"
     else
         printf '%s[ ]%s %s %s\n' "$tty_blue" "$tty_reset$tty_red" "$1" "$tty_reset"
     fi
